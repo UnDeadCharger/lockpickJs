@@ -1,3 +1,4 @@
+import { getLockPickAngle } from "./utils.js";
 const ACCEPTABLE_INPUT = ["w", "a", "s", "d"];
 
 class App {
@@ -41,7 +42,7 @@ class App {
       1,
       Math.min(90, Math.round((40 - diff) * 3))
     );
-    console.log(this.currentMaxRotate, (40 - diff) * 3);
+    // console.log(this.currentMaxRotate, (40 - diff) * 3);
     if (diff <= 10) {
       this.counter.textContent = `Lock open angle: ${this.sweetspot} - Perfect!`;
       // perfect
@@ -64,11 +65,10 @@ class App {
     this.sweetspot = (Math.random() * 1000) % 180;
 
     document.addEventListener("mousemove", (e) => {
-      const lockAngle = (e.clientX / this.root.scrollWidth) * 180;
-      //find something other than target just in case it bugged out
       this.progressBar.style.width = `${
         (e.clientX / this.root.scrollWidth) * 100
       }%`;
+      const lockAngle = getLockPickAngle(e, this.lock);
       this.pick.style.transform = `rotate(${lockAngle}deg)`;
 
       const diff = Math.abs(lockAngle - this.sweetspot);
@@ -112,8 +112,9 @@ requestAnimationFrame(app.loop);
 //Step 5: Make the rotate limit scale based on diff to sweetspot
 //Make sure if sweetspot is over the 180 or under 0 limit, just cut it off
 //Step 6: Randomize Sweetspot
+//Step 7: // Rework the mouse detection so that it detect based on mouse position relative to the lock not the fullscreen
 
 //Step 8: add lockpick stress;
-// Rework the mouse detection so that it detect based on mouse position relative to the lock not the fullscreen
+//We can get the lock position using getBoundingClientRect, and retrieve it positional data according to mouse data
 
 // max turning angle is relative to the diff
