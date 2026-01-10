@@ -182,19 +182,48 @@ body {
 
 .pick {
   position: absolute;
-  width: 400px;
-  height: 20px;
+  width: 600px;
+  height: 12px;
   /* border-radius: 250px; */
   transform: rotate(var(--pick-angle));
   content: "";
   background: linear-gradient(
     90deg,
-    rgba(42, 123, 155, 1) 50%,
-    rgba(255, 255, 255, 0) 50%,
-    rgba(255, 255, 255, 0) 100%
+    #b87333 5%,
+    #a3652c 5%,
+    #a3652c 10%,
+    #b87333 10%,
+    #b87333 15%,
+    #a3652c 15%,
+    #a3652c 20%,
+    #b87333 20%,
+    #b87333 25%,
+    #a3652c 25%,
+    #a3652c 30%,
+    #b87333 30%,
+    #b87333 50%,
+    #ffffff00 50%,
+    #ffffff00 100%
   );
   /* animation: stressLvl3 0.5s ease-in-out infinite; */
   /* background: blue; */
   /* border: transparent solid 200px; */
   /* border-left-color: blue; */
+}
+
+.pickHead {
+  position: absolute;
+  width: 600px;
+  height: 12px;
+  transform: rotate(var(--pick-angle));
+  content: "";
+  background: linear-gradient(
+    90deg,
+    #ffffff00 0%,
+    #ffffff00 48%,
+    #343a40 50%,
+    #343a40 51%,
+    #ffffff00 50%,
+    #ffffff00 100%
+  );
 }

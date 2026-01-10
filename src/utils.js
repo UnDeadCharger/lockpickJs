@@ -19,3 +19,24 @@ export const getLockPickAngle = (e, element) => {
   const angle = Math.max(0, Math.min(180, getAngle(x, y, xCenter, yCenter)));
   return angle;
 };
+
+export const getInvertedPoint = (x, y, xCenter, yCenter) => {
+  const x2 = -(x - xCenter);
+  const y2 = -(y - yCenter);
+  console.log("x2,y2", x2, y2, xCenter, yCenter, x, y);
+  return { x: x2, y: y2 };
+};
+
+export const getInvertedXY = (e, element) => {
+  const x = e.clientX;
+  const y = e.clientY;
+  const xCenter =
+    element.getBoundingClientRect().left + element.scrollWidth / 2;
+  const yCenter =
+    element.getBoundingClientRect().top + element.scrollHeight / 2;
+  return getInvertedPoint(x, y, xCenter, yCenter);
+};
+
+export const generateSweetSpot = () => {
+  return Math.min(170, Math.max((Math.random() * 1000) % 180, 10));
+};

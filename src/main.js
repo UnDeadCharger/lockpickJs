@@ -1,4 +1,4 @@
-import { getLockPickAngle } from "./utils.js";
+import { getLockPickAngle, getInvertedXY, generateSweetSpot } from "./utils.js";
 const ACCEPTABLE_INPUT = ["w", "a", "s", "d"];
 const MAX_STRESS_LEVEL = 100;
 class App {
@@ -13,15 +13,18 @@ class App {
     this.outer = document.querySelector(".outerhold");
     this.isMovingLock = false;
     this.lockProgress = 0; //Max is probably 90
-    this.sweetspot = 90;
+    this.sweetspot = generateSweetSpot();
     this.currentMaxRotate = 0;
 
     //Pick
     this.pick = document.querySelector(".pick");
     this.stressLevel = 0;
+    this.invertedX = 0;
+    this.invertedY = 0;
 
     this.counter = document.querySelector(".counter");
     this.progressBar = document.querySelector(".progressBarFill");
+    this.disabledInput = false;
 
     this.loop = this.loop.bind(this);
   }
@@ -29,7 +32,7 @@ class App {
   async loop() {
     requestAnimationFrame(this.loop);
     if (this.lockProgress >= 90) {
-      this.win();
+      this.unlock();
     }
 
     if (this.isMovingLock) {
@@ -44,14 +47,14 @@ class App {
         //Stressing the pick
         //add key frame, key frame the shake based on stress level, add stress level as class to pick element
         this.stressLevel++;
-      }
 
-      if (this.stressLevel > MAX_STRESS_LEVEL * 0.85) {
-        this.pick.classList.value = "pick stress3";
-      } else if (this.stressLevel > MAX_STRESS_LEVEL * 0.5) {
-        this.pick.classList.value = "pick stress2";
-      } else if (this.stressLevel > 0) {
-        this.pick.classList.value = "pick stress1";
+        if (this.stressLevel > MAX_STRESS_LEVEL * 0.8) {
+          this.pick.classList.value = "pick stress3";
+        } else if (this.stressLevel > MAX_STRESS_LEVEL * 0.5) {
+          this.pick.classList.value = "pick stress2";
+        } else if (this.stressLevel > 0) {
+          this.pick.classList.value = "pick stress1";
+        }
       }
     } else if (this.lockProgress > 0) {
       this.lockProgress -= 1;
@@ -59,10 +62,7 @@ class App {
     }
 
     if (this.stressLevel >= MAX_STRESS_LEVEL) {
-      console.log("breaking pick");
-      //break the pick
-      this.resetPick();
-      alert("Lockpick broke! Resetting...");
+      this.breakPick();
     }
 
     this.lock.style.transform = `rotate(${this.lockProgress}deg`;
@@ -70,9 +70,33 @@ class App {
 
   async execute(func) {}
 
+  breakPick() {
+    this.disabledInput = true;
+    const fastAnim =
+      Math.abs(this.invertedX) < 300 || Math.abs(this.invertedY) < 300
+        ? { x: this.invertedX * 5, y: this.invertedY * 5 }
+        : { x: this.invertedX, y: this.invertedY };
+    this.pick.animate(
+      [
+        { transform: `translateX(0px) translateY(0px)` },
+        {
+          transform: `translateX(${fastAnim.x}px) translateY(${fastAnim.y}px`,
+        },
+      ],
+      {
+        duration: 500, // in milliseconds
+        iterations: 1,
+        composite: "accumulate",
+      }
+    );
+    setTimeout(() => {
+      this.disabledInput = false;
+      this.lockProgress = 0;
+    }, 2000);
+    this.resetPick();
+  }
+
   resetPick() {
-    console.log("resetting pick");
-    this.lockProgress = 0;
     this.stressLevel = 0;
     this.isMovingLock = false;
     this.pick.classList.value = "pick";
@@ -80,13 +104,14 @@ class App {
   }
 
   resetLock() {
-    this.sweetspot = (Math.random() * 1000) % 180;
+    this.sweetspot = generateSweetSpot();
   }
 
-  win() {
+  unlock() {
     alert("Lock opened!");
-    this.resetLock();
     this.resetPick();
+    this.lockProgress = 0;
+    this.resetLock();
   }
 
   processSweetspot(diff) {
@@ -98,7 +123,6 @@ class App {
       Math.min(90, Math.round((40 - diff) * 3))
     );
     this.counter.textContent = `Lock open angle: ${this.sweetspot} - Stress: ${this.stressLevel}`;
-    // console.log(this.currentMaxRotate, (40 - diff) * 3);
     if (diff <= 10) {
       this.counter.textContent += `- Perfect!`;
       // perfect
@@ -118,14 +142,17 @@ class App {
   }
 
   setupEvents() {
-    this.sweetspot = (Math.random() * 1000) % 180;
-
     document.addEventListener("mousemove", (e) => {
+      if (this.disabledInput) {
+        return;
+      }
       this.progressBar.style.width = `${
         (e.clientX / this.root.scrollWidth) * 100
       }%`;
       const pickAngle = getLockPickAngle(e, this.outer);
-
+      const { x, y } = getInvertedXY(e, this.outer);
+      this.invertedX = x;
+      this.invertedY = y;
       // this.pick.style.transform = `rotate(${lockAngle}deg)`;
       this.root.style.setProperty("--pick-angle", `${pickAngle}deg`);
 
@@ -135,6 +162,9 @@ class App {
     });
 
     document.addEventListener("keydown", (e) => {
+      if (this.disabledInput) {
+        return;
+      }
       if (!ACCEPTABLE_INPUT.includes(e.key.toLowerCase())) {
         return;
       }
@@ -142,6 +172,9 @@ class App {
     });
 
     document.addEventListener("keyup", (e) => {
+      if (this.disabledInput) {
+        return;
+      }
       if (!ACCEPTABLE_INPUT.includes(e.key.toLowerCase())) {
         return;
       }
@@ -176,10 +209,18 @@ requestAnimationFrame(app.loop);
 //Lock pick stress -> lockpick break > pause input > play lockpick break animation -> reset();
 // stress formula
 
-//Step 9: winning;
+//Step 9: unlockning;
 //Step 9: asset animation;
 //Step 10: reset lock
 
 //We can get the lock position using getBoundingClientRect, and retrieve it positional data according to mouse data
 
 // max turning angle is relative to the difft
+
+//Step 11: Break pick animation
+// Make .pick fly off the screen
+// Reduce length of .pick:after to zero.
+// Make .pick fly back in to the hold
+// Reset the pick to original state
+
+//Lock pick only wobble when stressing
