@@ -7,24 +7,42 @@
     <title>Fallout Lockpick</title>
   </head>
   <body>
-    <h1>Fallout Lockpick</h1>
-    <div class="progressBar">
-      <div class="progressBarFill"></div>
+    <div class="background">
+      <div class="doorframe"></div>
+      <div class="door"></div>
+      <div class="doorframe"></div>
     </div>
-    <div class="counter"></div>
-    <p>[w] [a] [s] [d] - Move lock</p>
-    <p>[Mouse] - Move bobby pin</p>
-    <div class="game">
-      <div class="outerhold">
-        <div class="lock">
-          <div class="keyhole">
-            <div class="groove"><div class="hole"></div></div>
-            <div class="afterhole"></div>
+
+    <div class="gameContainer">
+      <div class="game">
+        <div class="outerhold">
+          <div class="lock">
+            <div class="keyhole">
+              <div class="groove"><div class="hole"></div></div>
+              <div class="afterhole"></div>
+            </div>
           </div>
         </div>
+        <div class="pickHead"></div>
+        <div class="pick"></div>
       </div>
-      <div class="pickHead"></div>
-      <div class="pick"></div>
+
+      <summary class="flex-row">
+        <div class="flex-column">
+          <h1>Fallout Lockpick - By UnDeadCharger</h1>
+          <h3>[W] [A] [S] [D] - Apply Torque</h3>
+          <h3>[Mouse] - Move bobby pin</h3>
+        </div>
+        <div class="counter">
+          <h2 class="score">Current Score: <span class="score-var">0</span></h2>
+          <h2 class="tries">
+            Bobbly pins remaining: <span class="tries-var">0</span>
+          </h2>
+          <h2 class="highscore">
+            Highscore: <span class="highscore-var">0</span>
+          </h2>
+        </div>
+      </summary>
     </div>
   </body>
   <script type="module" src="src/main.js"></script>

@@ -1,0 +1,54 @@
+Note i have written down during the fabrication of this minigame.
+//Step 1: set up events, track mouse movement according to a value ranging from 0 to 180
+//          Should probably learn how to convert px width into rotation
+//Step 2: set up sweet spot mechanic - difference between the current pos percent * 180 and the sweet spot pos
+//Sweetspot: 90
+// 80 - 100: perfect - go full way
+// 70-80 and 100-110: close - almost there go half way
+// 60-70 and 110-120: near - go like 10%
+// else: not budging
+
+// We handle the lock movement from here
+//Step 3: keydown rotate lock until 90deg
+//Step 4; no key press gradually rotate back to 0deg
+
+//Step 5: Make the rotate limit scale based on diff to sweetspot
+//Make sure if sweetspot is over the 180 or under 0 limit, just cut it off
+//Step 6: Randomize Sweetspot
+//Step 7: // Rework the mouse detection so that it detect based on mouse position relative to the lock not the fullscreen
+
+//Step 8: add lockpick stress;
+//Lock pick stress -> lockpick break > pause input > play lockpick break animation -> reset();
+// stress formula
+
+//Step 9: unlockning;
+//Step 9: asset animation;
+//Step 10: reset lock
+
+//We can get the lock position using getBoundingClientRect, and retrieve it positional data according to mouse data
+
+// max turning angle is relative to the difft
+
+//Step 11: Break pick animation
+// Make .pick fly off the screen
+// Reduce length of .pick:after to zero.
+// Make .pick fly back in to the hold
+// Reset the pick to original state
+
+//Lock pick only wobble when stressing
+
+//Winning Va
+// Freeze lock progress;
+// Hide lock;
+// Play door open animation;
+// Unhide new lock;
+// Zoom in lock;
+
+//Score counter V
+//Lockpick limit - reset V
+//Highscore counter using local storage V
+
+//Constant file .js
+//Organize CSS by object
+//move to helper function when possible V
+//use CSS variable

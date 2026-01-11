@@ -23,7 +23,6 @@ export const getLockPickAngle = (e, element) => {
 export const getInvertedPoint = (x, y, xCenter, yCenter) => {
   const x2 = -(x - xCenter);
   const y2 = -(y - yCenter);
-  console.log("x2,y2", x2, y2, xCenter, yCenter, x, y);
   return { x: x2, y: y2 };
 };
 
