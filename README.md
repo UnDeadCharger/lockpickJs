@@ -1,6 +1,6 @@
 # Fallout Lockpick minigamne
 
-Recreating the minigame from the Fallout series as well as Skyrim. Currently, I am planning on to add a limit for lockpick, as well as a score counter to keep track of how much locks you have sucessfully picked in one life (3 lockpicks per life).
+Recreating the minigame from the Fallout series as well as Skyrim. There is a limit for lockpick, as well as a score counter to keep track of how much locks you have sucessfully picked in one life (3 lockpicks per life). Try aiming for a highscore!
 
 ## Control
 Mouse Movement: Choose an angle for the pick inside the lock.
