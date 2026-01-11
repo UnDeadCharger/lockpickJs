@@ -20,7 +20,7 @@ class App {
     this.outer = document.querySelector(".outerhold"); //For calculating lockpick angle, not affected by its current rotation
     this.isMovingLock = false;
     this.lockProgress = 0; //Max is 90
-    this.sweetspot = generateSweetSpot();
+    this.sweetspot = 0; //No default sweetspot
     this.currentMaxRotate = 0;
 
     //Pick
@@ -44,6 +44,7 @@ class App {
     this.disabledInput = false;
 
     this.loop = this.loop.bind(this);
+    this.newLock();
   }
 
   async loop() {
