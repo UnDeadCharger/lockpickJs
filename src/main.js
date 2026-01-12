@@ -136,6 +136,7 @@ class App {
     );
 
     this.sweetspot = generateSweetSpot();
+    this.currentMaxRotate = 0;
   }
 
   async unlock() {
